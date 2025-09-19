@@ -1,0 +1,48 @@
+{% extends "base.html" %} {% block title %}Create Invoice{% endblock %} {% block
+content %}
+<div class="container">
+  <h1>🗂️Create Invoice</h1>
+  <form method="get" action="/invoices/find_student">
+    <label for="search_name">Search by first or last name:</label>
+    <input type="text" id="search_name" name="search_name" required />
+    <button type="submit" class="btn btn-success fullwidth height-tall">
+      Search
+    </button>
+  </form>
+
+  {% if search_results %}
+  <div class="result">
+    <p><strong>Matching students:</strong></p>
+    <ul>
+      {% for student in search_results %}
+      <li style="margin-bottom: 5px">
+        <form
+          method="post"
+          action="/invoices/create_invoice"
+          style="display: inline"
+        >
+          <input
+            type="hidden"
+            name="student_id"
+            value="{{ student.student_id }}"
+          />
+          <button type="submit" class="btn btn-primary fullwidth">
+            Create invoice for: {{ student.firstname }} {{ student.lastname }} —
+            <span><i>ID: {{ student.student_id }}</i></span>
+          </button>
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %} {% if result %}
+  <div class="result {% if 'No data' in result.message %}error{% endif %}">
+    <p><strong>{{ result.message }}</strong></p>
+    {% if result.koncni_znesek is defined %}
+    <p>Student ID: {{ result.student_id }}</p>
+    <p>Final amount: {{ "%.2f"|format(result.koncni_znesek) }}</p>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

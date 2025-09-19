@@ -1,0 +1,32 @@
+{% extends "base.html" %} {% block title %}Add Student{% endblock %} {% block
+content %}
+<div class="container">
+  <h1>➕ Add Student</h1>
+  <form method="post" action="/add_student">
+    <label for="firstname">Firstname:</label>
+    <input type="text" id="firstname" name="firstname" required />
+
+    <label for="lastname">Lastname:</label>
+    <input type="text" id="lastname" name="lastname" required />
+
+    <label for="address">Address:</label>
+    <input type="text" id="address" name="address" required />
+
+    <button type="submit" class="btn btn-success fullwidth height-tall">
+      Save
+    </button>
+  </form>
+
+  {% if result %}
+  <div class="result {% if 'not found' in result.message %}error{% endif %}">
+    <p><strong>{{ result.message }}</strong></p>
+    {% if result.student_id is defined %}
+    <p>ID: {{ result.student_id }}</p>
+    <p>Firstname: {{ result.firstname }}</p>
+    <p>Lastname: {{ result.lastname }}</p>
+    <p>Address: {{ result.address }}</p>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

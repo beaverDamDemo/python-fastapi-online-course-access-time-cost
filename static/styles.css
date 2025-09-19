@@ -1,0 +1,349 @@
+/* @media print {
+  body {
+    background: white;
+  }
+  .invoice-a4 {
+    box-shadow: none;
+    border-radius: 0;
+    width: 210mm;
+    min-height: 297mm;
+    padding: 20mm;
+  }
+  .invoice-actions {
+    display: none;
+  }
+}
+ */
+
+/* ==============================
+   1. VARIABLES
+   ============================== */
+:root {
+  --color-primary: #7d00d1;
+  --color-primary-hover: #5a00a8;
+  --color-secondary: #6c757d;
+  --color-secondary-hover: #5a6268;
+  align-self: start;
+  --color-accent: #f1b900;
+  --color-accent-hover: #e6c217;
+  --color-success: #4caf50;
+  --color-success-hover: #388e3c;
+  --color-error: #f44336;
+  --color-error-hover: #d32f2f;
+  --color-info: #2196f3;
+  --color-bg-info: #eaf6ff;
+  --color-bg-light: #f9f9f9;
+  --color-bg-medium: #eaeaea;
+  --color-bg-table: #f5f5f5;
+  --color-text-light: #fff;
+  --color-text-dark: #333;
+  --color-border: #ccc;
+  --color-white: #ffffff;
+
+  --s: 33px;
+  --c1: #f7f7d7;
+  --c2: #e7e7e7;
+  --_g: #0000 83%, var(--c1) 85% 99%, #0000 101%;
+}
+.flex {
+  display: flex;
+}
+.flex-1 {
+  flex: 1;
+}
+.fullwidth {
+  width: 100%;
+}
+.height-tall {
+  height: 45px;
+}
+/* ==============================
+   2. RESET & BASE
+   ============================== */
+html {
+  box-sizing: border-box;
+}
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: "Quicksand", sans-serif;
+  color: var(--color-text-dark);
+  background: radial-gradient(27% 29% at right, var(--_g)) calc(var(--s) / 2)
+      var(--s),
+    radial-gradient(27% 29% at left, var(--_g)) calc(var(--s) / -2) var(--s),
+    radial-gradient(29% 27% at top, var(--_g)) 0 calc(var(--s) / 2),
+    radial-gradient(29% 27% at bottom, var(--_g)) 0 calc(var(--s) / -2)
+      var(--c2);
+  background-size: calc(2 * var(--s)) calc(2 * var(--s));
+}
+
+/* ==============================
+   3. TYPOGRAPHY
+   ============================== */
+h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+}
+
+/* ==============================
+   4. LAYOUT
+   ============================== */
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}
+.container {
+  max-width: 800px;
+  width: 100%;
+  margin: 3rem auto;
+  padding: 2rem;
+  background: var(--color-white);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+.dashboard {
+  min-width: 360px;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: var(--color-white);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+.dashboard h1 {
+  margin-bottom: 2rem;
+}
+.dashboard a {
+  display: block;
+  margin: 1rem 0;
+  padding: 0.75rem;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background 0.2s ease;
+  border: 1px solid transparent;
+}
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+}
+/* ==============================
+   5. HEADER & NAV
+   ============================== */
+.main-header {
+  background: var(--color-primary);
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header-content a.logo {
+  background: transparent;
+}
+.header-content a.logo:hover {
+  filter: brightness(1.1);
+}
+nav a {
+  margin-left: 1rem;
+  color: var(--color-text-light);
+  text-decoration: none;
+  font-weight: bold;
+}
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* ==============================
+   6. BUTTONS
+   ============================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  padding: 0.6em 0.8em;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  flex: 0 0 auto;
+  transition: background-color 0.2s ease;
+}
+.btn img {
+  width: 18px;
+  height: 18px;
+}
+.dashboard a {
+  background: var(--color-primary);
+  color: var(--color-text-light);
+}
+.dashboard a:hover {
+  background: var(--color-accent);
+  border: 1px solid var(--color-primary);
+}
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-text-light);
+  border: 1px solid transparent;
+}
+.btn-primary:hover {
+  background: var(--color-accent);
+  border: 1px solid var(--color-primary);
+}
+.btn-secondary {
+  background: var(--color-secondary);
+  color: var(--color-text-light);
+}
+.btn-secondary:hover {
+  background: var(--color-secondary-hover);
+}
+.btn-accent {
+  background: var(--color-accent);
+  color: var(--color-text-light);
+}
+.btn-accent:hover {
+  background: var(--color-accent-hover);
+}
+.btn-success {
+  background: var(--color-success);
+  color: var(--color-text-light);
+  border: 1px solid transparent;
+}
+.btn-success:hover {
+  background: var(--color-success-hover);
+  border: 1px solid #ffef40;
+}
+.btn-error {
+  background: var(--color-error);
+  color: var(--color-text-light);
+  border: 1px solid transparent;
+}
+.btn-error:hover {
+  background: var(--color-error-hover);
+  border: 1px solid #000;
+}
+
+/* Special PDF button size */
+.btn-pdf img {
+  width: 18px;
+  height: 18px;
+}
+
+/* ==============================
+   7. FORMS
+   ============================== */
+form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+form input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+form input:focus {
+  border-color: var(--color-accent);
+  outline: none;
+}
+
+/* ==============================
+   8. MESSAGES
+   ============================== */
+.result {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: var(--color-bg-info);
+  border-left: 4px solid var(--color-info);
+  border-radius: 6px;
+}
+.result.error {
+  background: var(--color-bg-light);
+  border-left-color: var(--color-error);
+}
+
+/* ==============================
+   9. TABLES
+   ============================== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+th,
+td {
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  text-align: left;
+}
+th {
+  background: var(--color-bg-table);
+}
+
+/* ==============================
+   10. INVOICE
+   ============================== */
+.invoice-a4 {
+  width: 794px;
+  min-height: 1123px;
+  margin: auto;
+  background: var(--color-white);
+  padding: 2em;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.invoice-header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid #000;
+  padding-bottom: 1em;
+  margin-bottom: 1.5em;
+}
+.client-info,
+.invoice-details {
+  margin-bottom: 2em;
+}
+.invoice-details table {
+  width: 100%;
+}
+.invoice-details th,
+.invoice-details td {
+  border: 1px solid #ccc;
+  padding: 0.5em;
+}
+.invoice-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2em;
+}

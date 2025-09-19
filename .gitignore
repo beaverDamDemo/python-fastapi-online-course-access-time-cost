@@ -1,0 +1,64 @@
+# -------------------------
+# Python cache / build files
+# -------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# -------------------------
+# Virtual environments
+# -------------------------
+venv/
+ENV/
+env/
+.venv/
+
+# -------------------------
+# IDE / editor settings
+# -------------------------
+*.swp
+*.swo
+
+# -------------------------
+# Environment & secrets
+# -------------------------
+.env.prod
+!env.example   # keep a template if you want
+
+# -------------------------
+# Logs & temp files
+# -------------------------
+*.log
+*.tmp
+*.temp
+
+# -------------------------
+# OS-specific junk
+# -------------------------
+.DS_Store
+Thumbs.db
+
+# -------------------------
+# Database / data dumps
+# -------------------------
+*.sqlite3
+*.db
+*.sql
+*.dump
+
+# -------------------------
+# Test / coverage outputs
+# -------------------------
+.coverage
+htmlcov/
+.pytest_cache/
+
+
+Screenshot*

@@ -1,0 +1,50 @@
+{% extends "base.html" %} {% block title %}Student List{% endblock %} {% block
+content %}
+<div class="container">
+  <h1>📋 Student Management</h1>
+  {% if students %}
+  <table>
+    <thead>
+      <tr>
+        <th>Student ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Address</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in students %}
+      <tr>
+        <td>{{ s.student_id }}</td>
+        <td>{{ s.firstname }}</td>
+        <td>{{ s.lastname }}</td>
+        <td>{{ s.address }}</td>
+        <td class="action-buttons">
+          <button
+            class="btn btn-primary fullwidth"
+            style="flex: 1"
+            onclick="window.location.href='/students/{{ s.student_id }}/uredi'"
+          >
+            ✏️ Edit
+          </button>
+          <form
+            style="height: 35px"
+            method="post"
+            action="/students/{{ s.student_id }}/delete"
+            onsubmit="return confirm('Are you sure?');"
+          >
+            <button type="submit" class="btn btn-error fullwidth">
+              🗑️ Delete
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>No students registered.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}My App{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet" />
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="{{ url_for('static', path='icons/favicon-16x16.png') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="{{ url_for('static', path='icons/favicon-32x32.png') }}"
+    />
+    <link
+      rel="icon"
+      type="image/ico"
+      href="{{ url_for('static', path='icons/favicon.ico') }}"
+    />
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="{{ url_for('static', path='icons/android-chrome-192x192.png') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="{{ url_for('static', path='icons/android-chrome-512x512.png') }}"
+    />
+
+    <link
+      rel="apple-touch-icon"
+      href="{{ url_for('static', path='icons/apple-touch-icon.png') }}"
+    />
+  </head>
+  <body>
+    <header class="main-header">
+      <div class="header-content">
+        <a href="/" class="logo">
+          <img
+            src="{{ url_for('static', path='images/logo.png') }}"
+            alt="Logo"
+            class="header-logo"
+            width="54"
+          />
+        </a>
+        <a href="/logout" class="btn btn-error">Logout</a>
+
+        {% if request.state.flash %}
+        <div class="result">{{ request.state.flash }}</div>
+        {% endif %}
+      </div>
+    </header>
+
+    <main>{% block content %}{% endblock %}</main>
+  </body>
+</html>

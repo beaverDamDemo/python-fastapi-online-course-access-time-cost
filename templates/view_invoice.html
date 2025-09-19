@@ -1,0 +1,55 @@
+{% extends "base.html" %} {% block title %}Invoice Details{% endblock %} {%
+block content %}
+<div class="invoice-a4">
+  <header class="invoice-header">
+    <div class="company-info">
+      <h1>My Company Ltd.</h1>
+      <p>Street 123, 6000 Koper</p>
+      <p>VAT No.: SI12345678</p>
+    </div>
+    <div class="invoice-meta">
+      <h2>Invoice No. {{ racun.id }}</h2>
+      <p>Issue Date: {{ racun.datum_izdaje or "—" }}</p>
+    </div>
+  </header>
+
+  <section class="client-info">
+    <h3>Student Information</h3>
+    <p><strong>Name:</strong> {{ student.firstname }} {{ student.lastname }}</p>
+    <p><strong>Address:</strong> {{ student.address }}</p>
+  </section>
+
+  <section class="invoice-details">
+    <h3>Invoice Details</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Service / Product</td>
+          <td>1</td>
+          <td>{{ "%.2f"|format(racun.koncni_znesek) }} €</td>
+          <td>{{ "%.2f"|format(racun.koncni_znesek) }} €</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="invoice-actions">
+    <a href="/manage_invoices" class="btn btn-primary">⬅ Back</a>
+    <a href="/invoices/{{ racun.id }}/pdf" class="btn btn-primary">
+      Save as PDF
+      <img
+        src="{{ url_for('static', path='icons/icons8-pdf-50.png') }}"
+        alt="PDF"
+      />
+    </a>
+  </div>
+</div>
+{% endblock %}

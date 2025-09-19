@@ -1,0 +1,43 @@
+{% extends "base.html" %} {% block title %}Invoice Management{% endblock %} {%
+block content %}
+<div class="container">
+  <h1>⚙️ Invoice Management</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Student ID</th>
+        <th>Final Amount</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for racun in invoices %}
+      <tr>
+        <td>{{ racun.id }}</td>
+        <td>{{ racun.student_id }}</td>
+        <td>{{ "%.2f"|format(racun.koncni_znesek) }}</td>
+        <td class="action-buttons">
+          <button
+            class="btn btn-primary fullwidth"
+            style="flex: 1"
+            onclick="window.location.href='/invoices/{{ racun.id }}/view_invoice'"
+          >
+            👁️ View
+          </button>
+          <form
+            class="flex-1"
+            method="post"
+            action="/invoices/{{ racun.id }}/delete"
+          >
+            <button type="submit" class="btn btn-error fullwidth">
+              🗑️ Delete
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
