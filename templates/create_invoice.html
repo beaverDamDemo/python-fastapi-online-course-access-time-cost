@@ -38,9 +38,9 @@ content %}
   {% endif %} {% if result %}
   <div class="result {% if 'No data' in result.message %}error{% endif %}">
     <p><strong>{{ result.message }}</strong></p>
-    {% if result.koncni_znesek is defined %}
+    {% if result.total is defined %}
     <p>Student ID: {{ result.student_id }}</p>
-    <p>Final amount: {{ "%.2f"|format(result.koncni_znesek) }}</p>
+    <p>Final amount: {{ "%.2f"|format(result.total) }}</p>
     {% endif %}
   </div>
   {% endif %}

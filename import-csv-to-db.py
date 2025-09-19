@@ -36,9 +36,9 @@ def import_csv_to_db(csv_path, student_id, DATABASE_URL):
     cur.execute(
         """
         CREATE TEMP TABLE fastapi_tmp_import (
-            casovna_znacka TEXT,
-            poraba TEXT,
-            dinamicne_cene TEXT
+            timestamp TEXT,
+            used_credits TEXT,
+            credit_price TEXT
         );
     """
     )
@@ -67,7 +67,7 @@ def import_csv_to_db(csv_path, student_id, DATABASE_URL):
 
         with open(tmp_path, "r", encoding="utf-8") as tmp_file:
             cur.copy_expert(
-                "COPY fastapi_tmp_import(casovna_znacka, poraba, dinamicne_cene) FROM STDIN WITH (FORMAT csv, DELIMITER ';')",
+                "COPY fastapi_tmp_import(timestamp, used_credits, credit_price) FROM STDIN WITH (FORMAT csv, DELIMITER ';')",
                 tmp_file,
             )
 
@@ -78,11 +78,11 @@ def import_csv_to_db(csv_path, student_id, DATABASE_URL):
     # 4. Insert into main table with fixed student_id
     cur.execute(
         """
-        INSERT INTO fastapi_inserted_data (casovna_znacka, poraba, dinamicne_cene, student_id)
+        INSERT INTO fastapi_inserted_data (timestamp, used_credits, credit_price, student_id)
         SELECT
-            casovna_znacka::timestamptz,
-            REPLACE(poraba, ',', '.')::double precision,
-            REPLACE(dinamicne_cene, ',', '.')::double precision,
+            timestamp::timestamptz,
+            REPLACE(used_credits, ',', '.')::double precision,
+            REPLACE(credit_price, ',', '.')::double precision,
             %s
         FROM fastapi_tmp_import;
     """,

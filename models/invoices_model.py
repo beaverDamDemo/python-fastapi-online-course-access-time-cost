@@ -11,4 +11,4 @@ class Invoice(Base):
         ForeignKey("fastapi_students.student_id", ondelete="CASCADE"),
         nullable=False,
     )
-    koncni_znesek = Column(Float, nullable=False)
+    total = Column(Float, nullable=False)

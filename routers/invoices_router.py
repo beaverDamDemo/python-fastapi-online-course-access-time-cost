@@ -76,21 +76,21 @@ def handle_form(
             "create_invoice.html", {"request": request, "result": result}
         )
 
-    koncni_znesek = 0
+    total = 0
     invalid_found = False
 
     for row in rows:
         try:
             poraba = float(row.poraba)
             cena = float(row.dinamicne_cene)
-            koncni_znesek += poraba * cena
+            total += poraba * cena
         except (ValueError, TypeError):
             invalid_found = True
 
     if invalid_found:
         print("❌ At least one row has invalid data format.")
 
-    new_racun = Invoice(student_id=student_id, koncni_znesek=koncni_znesek)
+    new_racun = Invoice(student_id=student_id, total=total)
     db.add(new_racun)
     db.commit()
     db.refresh(new_racun)
@@ -98,7 +98,7 @@ def handle_form(
     result = {
         "message": "Račun ustvarjen uspešno",
         "student_id": student_id,
-        "koncni_znesek": koncni_znesek,
+        "total": total,
     }
     return templates.TemplateResponse(
         "create_invoice.html", {"request": request, "result": result}
