@@ -1,6 +1,6 @@
 ## Overview
 
-This is a FastAPI backend for managing invoices (`računi`) linked to clients (`stranke`). It supports PDF generation via WeasyPrint and CSV import for bulk data ingestion. Built with SQLAlchemy, Alembic, and Docker for reproducible development and deployment.
+This is a FastAPI backend for managing invoices (`invoices`) linked to clients (`students`). It supports PDF generation via WeasyPrint and CSV import for bulk data ingestion. Built with SQLAlchemy, Alembic, and Docker for reproducible development and deployment.
 
 1. Import csv, this will populate `fastapi_inserted_data` table
 2. Add a new student, student's id will be auto-generated
@@ -8,7 +8,6 @@ This is a FastAPI backend for managing invoices (`računi`) linked to clients (`
 
 ## Env files
 
-- To use local postgres, rename env.dev.example to .env.dev
 - To use live aiven postgres, you need .env.prod, which is not in the codebase
 
 ## Project structure
@@ -18,15 +17,8 @@ This is a FastAPI backend for managing invoices (`računi`) linked to clients (`
 - `routers/` – API route definitions
 - `alembic/` – Database migrations
 - `import-csv-to-db.py` – CSV import script
-- `docker-compose.yml` – Development setup
+- `docker-compose.dev.yml` – Development setup
 - `docker-compose.prod.yml` – Production setup
-- `docker-compose.override.yml` – Continue reading...
-
-## Docker Compose override
-
-By default, Docker Compose automatically loads `docker-compose.override.yml` alongside `docker-compose.yml`. This is useful for local development overrides (e.g. mounting volumes, enabling debug mode, or exposing ports).
-
-If you're using `docker-compose.prod.yml` for production, you don't need to care about the override file.
 
 ## Running the app
 
@@ -40,12 +32,13 @@ uvicorn.exe main:app --reload
 
 #### Development
 
-docker-compose up --build
+docker-compose -f docker-compose.dev.yml build
+docker-compose -f docker-compose.dev.yml up
 
 #### Production
 
-docker-compose -f docekr-compose.prod.yml build
-docker-compose -f docekr-compose.prod.yml up
+docker-compose -f docker-compose.prod.yml build
+docker-compose -f docker-compose.prod.yml up
 
 ## CSV import (new)
 
@@ -64,18 +57,6 @@ docker-compose exec fastapi python import-csv-to-db.py --env dev
 ```
 
 it will generate some temporary fake student_id
-
-## CSV import (old)
-
-Currently you have to import the `.csv` files manually by running:
-
-```
-
-import-csv-to-db.py
-
-```
-
-It will "link" the CSV data with `student` based on the number in the `.csv` filename.
 
 ## Installing dependencies
 

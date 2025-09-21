@@ -21,10 +21,10 @@ def import_csv_to_db(csv_path, student_id, DATABASE_URL):
     conn = psycopg2.connect(DATABASE_URL)
     cur = conn.cursor()
 
-    # 0. Ensure student_id exists in fastapi_stranke
+    # 0. Ensure student_id exists in fastapi_students
     cur.execute(
         """
-        INSERT INTO fastapi_stranke (student_id)
+        INSERT INTO fastapi_students (student_id)
         OVERRIDING SYSTEM VALUE
         VALUES (%s)
         ON CONFLICT (student_id) DO NOTHING;
@@ -88,6 +88,28 @@ def import_csv_to_db(csv_path, student_id, DATABASE_URL):
     """,
         (student_id,),
     )
+
+        # Compute period_start, period_end, and total
+    cur.execute(
+        """
+        SELECT MIN(timestamp), MAX(timestamp), SUM(used_credits * credit_price)
+        FROM fastapi_inserted_data
+        WHERE student_id = %s;
+        """,
+        (student_id,),
+    )
+    period_start, period_end, total = cur.fetchone()
+
+    # 6. Insert into invoices table
+    cur.execute(
+        """
+        INSERT INTO fastapi_invoices (student_id, period_start, period_end, total)
+        VALUES (%s, %s, %s, %s)
+        RETURNING id;
+        """,
+        (student_id, period_start, period_end, total),
+    )
+    invoice_id = cur.fetchone()[0]
 
     conn.commit()
     cur.close()
