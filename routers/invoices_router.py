@@ -17,7 +17,7 @@ from schemas.invoice_schema import InvoiceCreate, InvoiceOut
 
 
 router = APIRouter(
-    prefix="/invoices", tags=["Računi"], dependencies=[Depends(require_login)]
+    prefix="/invoices", tags=["Invoices"], dependencies=[Depends(require_login)]
 )
 
 templates = Jinja2Templates(directory="templates")
@@ -33,12 +33,12 @@ def get_db():
 
 # Create
 @router.post("/", response_model=InvoiceOut)
-def create_racun(racun: InvoiceCreate, db: Session = Depends(get_db)):
-    new_racun = Invoice(**racun.dict())
-    db.add(new_racun)
+def create_invoice(invoice: InvoiceCreate, db: Session = Depends(get_db)):
+    new_invoice = Invoice(**invoice.dict())
+    db.add(new_invoice)
     db.commit()
-    db.refresh(new_racun)
-    return new_racun
+    db.refresh(new_invoice)
+    return new_invoice
 
 
 # Read all
@@ -90,13 +90,13 @@ def handle_form(
     if invalid_found:
         print("❌ At least one row has invalid data format.")
 
-    new_racun = Invoice(student_id=student_id, total=total)
-    db.add(new_racun)
+    new_invoice = Invoice(student_id=student_id, total=total)
+    db.add(new_invoice)
     db.commit()
-    db.refresh(new_racun)
+    db.refresh(new_invoice)
 
     result = {
-        "message": "Račun ustvarjen uspešno",
+        "message": "Invoice ustvarjen uspešno",
         "student_id": student_id,
         "total": total,
     }
@@ -105,49 +105,49 @@ def handle_form(
     )
 
 
-@router.get("/{racun_id}", response_model=InvoiceOut)
-def read_racun(racun_id: int, db: Session = Depends(get_db)):
-    racun = db.query(Invoice).get(racun_id)
-    if not racun:
-        raise HTTPException(status_code=404, detail="Račun not found")
-    return racun
+@router.get("/{invoice_id}", response_model=InvoiceOut)
+def read_invoice(invoice_id: int, db: Session = Depends(get_db)):
+    invoice = db.query(Invoice).get(invoice_id)
+    if not invoice:
+        raise HTTPException(status_code=404, detail="Invoice not found")
+    return invoice
 
 
-@router.get("/{racun_id}/view_invoice", response_class=HTMLResponse)
-def view_racun(request: Request, racun_id: int, db: Session = Depends(get_db)):
-    racun = db.query(Invoice).get(racun_id)
-    if not racun:
-        raise HTTPException(status_code=404, detail="Račun not found")
+@router.get("/{invoice_id}/view_invoice", response_class=HTMLResponse)
+def view_invoice(request: Request, invoice_id: int, db: Session = Depends(get_db)):
+    invoice = db.query(Invoice).get(invoice_id)
+    if not invoice:
+        raise HTTPException(status_code=404, detail="Invoice not found")
 
     # Get linked student info
-    student = db.query(Student).filter_by(student_id=racun.student_id).first()
+    student = db.query(Student).filter_by(student_id=invoice.student_id).first()
 
     return templates.TemplateResponse(
-        "view_invoice.html", {"request": request, "racun": racun, "student": student}
+        "view_invoice.html", {"request": request, "invoice": invoice, "student": student}
     )
 
 
-@router.post("/{racun_id}/delete")
-def delete_racun_web(racun_id: int, db: Session = Depends(get_db)):
-    print("Deleting racun with ID:", racun_id)
-    racun = db.query(Invoice).get(racun_id)
-    if racun:
-        db.delete(racun)
+@router.post("/{invoice_id}/delete")
+def delete_invoice_web(invoice_id: int, db: Session = Depends(get_db)):
+    print("Deleting invoice with ID:", invoice_id)
+    invoice = db.query(Invoice).get(invoice_id)
+    if invoice:
+        db.delete(invoice)
         db.commit()
     return RedirectResponse(url="/manage_invoices", status_code=303)
 
 
-@router.get("/{racun_id}/pdf")
-def export_racun_pdf(racun_id: int, db: Session = Depends(get_db)):
-    racun = db.query(Invoice).get(racun_id)
-    if not racun:
-        raise HTTPException(status_code=404, detail="Račun not found")
+@router.get("/{invoice_id}/pdf")
+def export_invoice_pdf(invoice_id: int, db: Session = Depends(get_db)):
+    invoice = db.query(Invoice).get(invoice_id)
+    if not invoice:
+        raise HTTPException(status_code=404, detail="Invoice not found")
 
-    student = db.query(Student).filter_by(student_id=racun.student_id).first()
+    student = db.query(Student).filter_by(student_id=invoice.student_id).first()
 
     # Render the PDF-specific template (no url_for)
     html_content = templates.get_template("view_invoice_pdf.html").render(
-        racun=racun, student=student
+        invoice=invoice, student=student
     )
 
     # Generate PDF
@@ -155,5 +155,5 @@ def export_racun_pdf(racun_id: int, db: Session = Depends(get_db)):
         HTML(string=html_content, base_url=".").write_pdf(tmp_file.name)
         pdf_path = tmp_file.name
 
-    filename = f"racun_{racun.id}.pdf"
+    filename = f"invoice_{invoice.id}.pdf"
     return FileResponse(pdf_path, media_type="application/pdf", filename=filename)

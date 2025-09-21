@@ -8,8 +8,8 @@ block content %}
       <p>VAT No.: SI12345678</p>
     </div>
     <div class="invoice-meta">
-      <h2>Invoice No. {{ racun.id }}</h2>
-      <p>Issue Date: {{ racun.datum_izdaje or "—" }}</p>
+      <h2>Invoice No. {{ invoice.id }}</h2>
+      <p>Issue Date: {{ invoice.datum_izdaje or "—" }}</p>
     </div>
   </header>
 
@@ -21,6 +21,16 @@ block content %}
 
   <section class="invoice-details">
     <h3>Invoice Details</h3>
+    <p>
+      <strong>Period Start:</strong>
+      {{ invoice.period_start.strftime("%d.%m.%Y %H:%M") if invoice.period_start
+      else "—" }}
+    </p>
+    <p>
+      <strong>Period End:</strong>
+      {{ invoice.period_end.strftime("%d.%m.%Y %H:%M") if invoice.period_end else
+      "—" }}
+    </p>
     <table>
       <thead>
         <tr>
@@ -34,8 +44,8 @@ block content %}
         <tr>
           <td>Service / Product</td>
           <td>1</td>
-          <td>{{ "%.2f"|format(racun.total) }} €</td>
-          <td>{{ "%.2f"|format(racun.total) }} €</td>
+          <td>{{ "%.2f"|format(invoice.total) }} €</td>
+          <td>{{ "%.2f"|format(invoice.total) }} €</td>
         </tr>
       </tbody>
     </table>
@@ -43,12 +53,9 @@ block content %}
 
   <div class="invoice-actions">
     <a href="/manage_invoices" class="btn btn-primary">⬅ Back</a>
-    <a href="/invoices/{{ racun.id }}/pdf" class="btn btn-primary">
+    <a href="/invoices/{{ invoice.id }}/pdf" class="btn btn-primary">
       Save as PDF
-      <img
-        src="{{ url_for('static', path='icons/icons8-pdf-50.png') }}"
-        alt="PDF"
-      />
+      <img src="{{ url_for('static', path='icons/icons8-pdf-50.png') }}" alt="PDF" />
     </a>
   </div>
 </div>

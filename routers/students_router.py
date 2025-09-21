@@ -23,7 +23,7 @@ def get_db():
         db.close()
 
 
-@router.get("/{student_id}/uredi", response_class=HTMLResponse)
+@router.get("/{student_id}/revise", response_class=HTMLResponse)
 def edit_student_form(student_id: int, request: Request, db: Session = Depends(get_db)):
     print(f"Edit route hit for student_id={student_id}")
     student = db.query(Student).get(student_id)
@@ -34,7 +34,7 @@ def edit_student_form(student_id: int, request: Request, db: Session = Depends(g
     )
 
 
-@router.post("/{student_id}/uredi")
+@router.post("/{student_id}/revise")
 def edit_student_submit(
     student_id: int,
     firstname: str = Form(...),

@@ -7,29 +7,32 @@ block content %}
       <tr>
         <th>ID</th>
         <th>Student ID</th>
+        <th>Period Start</th>
+        <th>Period End</th>
         <th>Final Amount</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      {% for racun in invoices %}
+      {% for invoice in invoices %}
       <tr>
-        <td>{{ racun.id }}</td>
-        <td>{{ racun.student_id }}</td>
-        <td>{{ "%.2f"|format(racun.total) }}</td>
+        <td>{{ invoice.id }}</td>
+        <td>{{ invoice.student_id }}</td>
+        <td>
+          {{ invoice.period_start.strftime("%Y-%m-%d %H:%M") if invoice.period_start
+          else "-" }}
+        </td>
+        <td>
+          {{ invoice.period_end.strftime("%Y-%m-%d %H:%M") if invoice.period_end
+          else "-" }}
+        </td>
+        <td>{{ "%.2f"|format(invoice.total) }}</td>
         <td class="action-buttons">
-          <button
-            class="btn btn-primary fullwidth"
-            style="flex: 1"
-            onclick="window.location.href='/invoices/{{ racun.id }}/view_invoice'"
-          >
+          <button class="btn btn-primary fullwidth" style="flex: 1"
+            onclick="window.location.href='/invoices/{{ invoice.id }}/view_invoice'">
             👁️ View
           </button>
-          <form
-            class="flex-1"
-            method="post"
-            action="/invoices/{{ racun.id }}/delete"
-          >
+          <form class="flex-1" method="post" action="/invoices/{{ invoice.id }}/delete">
             <button type="submit" class="btn btn-error fullwidth">
               🗑️ Delete
             </button>

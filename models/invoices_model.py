@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Float, ForeignKey
+from sqlalchemy import Column, Integer, Float, ForeignKey, DateTime
 from models.base import Base
 
 
@@ -11,4 +11,6 @@ class Invoice(Base):
         ForeignKey("fastapi_students.student_id", ondelete="CASCADE"),
         nullable=False,
     )
+    period_start = Column(DateTime, nullable=True)
+    period_end = Column(DateTime, nullable=True)
     total = Column(Float, nullable=False)
